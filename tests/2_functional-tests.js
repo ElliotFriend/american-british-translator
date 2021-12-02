@@ -45,13 +45,14 @@ suite('Functional Tests', function() {
           assert.isObject(res.body, 'returned object should be of type object')
           assert.property(res.body, 'error', 'returned object should contain an error property')
           assert.isString(res.body.error, 'returned error property should be of type string')
-          assert.equal(res.body.error, 'Required field(s) missing', 'returned error should contain a helpful message')
+          assert.equal(res.body.error, 'Invalid value for locale field', 'returned error should contain a helpful message')
           done()
         })
     })
+
     test('Translation with missing text field: POST request to /api/translate', (done) => {
       let inputObject = {
-        locale: 'british-to-american'
+        locale: 'american-to-british'
       }
       chai.request(server)
         .post('/api/translate')
@@ -66,6 +67,7 @@ suite('Functional Tests', function() {
           done()
         })
     })
+
     test('Translation with missing locale field: POST request to /api/translate', (done) => {
       let inputObject = {
         text: 'Here is some text to translate',
@@ -83,6 +85,7 @@ suite('Functional Tests', function() {
           done()
         })
     })
+
     test('Translation with empty text: POST request to /api/translate', (done) => {
       let inputObject = {
         text: '',
@@ -101,6 +104,7 @@ suite('Functional Tests', function() {
           done()
         })
     })
+
     test('Translation with text that needs no translation: POST request to /api/translate', (done) => {
       let inputObject = {
         text: 'Here is some text to translate',
