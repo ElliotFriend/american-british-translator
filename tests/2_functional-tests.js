@@ -107,7 +107,11 @@ suite('Functional Tests', function() {
 
     test('Translation with text that needs no translation: POST request to /api/translate', (done) => {
       let inputObject = {
-        text: 'Here is some text to translate',
+        text: 'Here is some text that needs no translation',
+        locale: 'american-to-british'
+      }
+      let fccObject = {
+        text: 'SaintPeter and nhcarrigan give their regards!',
         locale: 'british-to-american'
       }
       chai.request(server)
@@ -115,11 +119,31 @@ suite('Functional Tests', function() {
         .type('json')
         .send(inputObject)
         .end( (err, res) => {
-          assert.equal(true, false)
-          done()
+          assert.equal(res.status, 200, 'return status should be 200')
+          assert.isObject(res.body, 'returned object should be of type object')
+          assert.property(res.body, 'text', 'returned object should contain a text property')
+          assert.isString(res.body.text, 'returned text property should be of type string')
+          assert.equal(res.body.text, inputObject.text, 'returned text should the same text that was submitted')
+          assert.property(res.body, 'translation', 'returned object should contain a translation property')
+          assert.isString(res.body.translation, 'returned translation property should be of type string')
+          assert.equal(res.body.translation, 'Everything looks good to me!', 'returned translation should contain a helpful message')
+          chai.request(server)
+            .post('/api/translate')
+            .type('json')
+            .send(fccObject)
+            .end( (err, res) => {
+              assert.equal(res.status, 200, 'return status should be 200')
+              assert.isObject(res.body, 'returned object should be of type object')
+              assert.property(res.body, 'text', 'returned object should contain a text property')
+              assert.isString(res.body.text, 'returned text property should be of type string')
+              assert.equal(res.body.text, fccObject.text, 'returned text should the same text that was submitted')
+              assert.property(res.body, 'translation', 'returned object should contain a translation property')
+              assert.isString(res.body.translation, 'returned translation property should be of type string')
+              assert.equal(res.body.translation, 'Everything looks good to me!', 'returned translation should contain a helpful message')
+              done()
         })
     })
 
   })
-
+})
 });
