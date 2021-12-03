@@ -19,19 +19,22 @@ module.exports = function (app) {
       } else {
         const textString = req.body.text
         const locale = req.body.locale
-        let translationString = ''
+        let translationArray = []
         let textArray = translator.getTextArray(textString)
         let startingLocale = translator.getStartingLocale(locale)
-        // console.log(startingLocale)
         // console.log(textArray)
-        if (translator.needsTranslation(textArray)) {
-          // do the translation
-        } else {
-          return res.json({ text: textString, translation: 'Everything looks good to me!'})
-        }
-        // console.log(needsTranslation)
-        // console.log(needsTranslation)
+        // if (translator.needsTranslation(textString)) {
+        //   // do the translation
+        //   for (let w of textArray) {
+        //     translationArray = translationArray.concat(translator.translateSpelling(w, startingLocale))
+        //   }
+        //   let translationString = translator.translatePhrase(translationArray.join(' '), startingLocale)
+        //   return res.json({ text: textString, translation: translationString })
+        // } else {
+        //   return res.json({ text: textString, translation: 'Everything looks good to me!'})
+        // }
         // We've passed the necessary validations. Here's where we get to work!
+        let translationString = translator.translateAll(textString, startingLocale)
         return res.json({ text: textString, translation: translationString })
       }
     });
