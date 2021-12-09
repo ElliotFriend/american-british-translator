@@ -12,20 +12,27 @@ suite('Functional Tests', function() {
 
   suite('Testing the /api/translate endpoint with valid input', () => {
 
-    // test('Translation with text and locale fields: POST request to /api/translate', (done) => {
-    //   let inputObject = {
-    //     text: 'Here is some text to translate',
-    //     locale: 'british-to-american'
-    //   }
-    //   chai.request(server)
-    //     .post('/api/translate')
-    //     .type('json')
-    //     .send(inputObject)
-    //     .end( (err, res) => {
-    //       assert.equal(true, false)
-    //       done()
-    //     })
-    // })
+    test('Translation with text and locale fields: POST request to /api/translate', (done) => {
+      let inputObject = {
+        text: 'I\'ve just got bits and bobs in my bum bag.',
+        locale: 'british-to-american'
+      }
+      chai.request(server)
+        .post('/api/translate')
+        .type('json')
+        .send(inputObject)
+        .end( (err, res) => {
+          assert.equal(res.status, 200, 'return status should be 200')
+          assert.isObject(res.body, 'returned object should be of type object')
+          assert.property(res.body, 'text', 'returned object should contain a text property')
+          assert.isString(res.body.text, 'returned text property should be of type string')
+          assert.equal(res.body.text, inputObject.text, 'returned text should the same text that was submitted')
+          assert.property(res.body, 'translation', 'returned object should contain a translation property')
+          assert.isString(res.body.translation, 'returned translation property should be of type string')
+          assert.equal(res.body.translation, 'I\'ve just got <span class="highlight">odds and ends</span> in my <span class="highlight">fanny pack</span>.', 'returned translation should contain a the translation')
+          done()
+        })
+    })
 
   })
 
