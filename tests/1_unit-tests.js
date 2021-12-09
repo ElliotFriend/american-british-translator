@@ -175,25 +175,45 @@ suite('Unit Tests', () => {
     })
 
   })
-  //
-  // suite('Highlighting Translated Words', () => {
-  //
-  //   test("Highlight translation in Mangoes are my favorite fruit.", () => {
-  //     assert.equal(true, false)
-  //   })
-  //
-  //   test("Highlight translation in I ate yogurt for breakfast.", () => {
-  //     assert.equal(true, false)
-  //   })
-  //
-  //   test("Highlight translation in We watched the footie match for a while.", () => {
-  //     assert.equal(true, false)
-  //   })
-  //
-  //   test("Highlight translation in Paracetamol takes up to an hour to work.", () => {
-  //     assert.equal(true, false)
-  //   })
-  //
-  // })
+
+  suite('Highlighting Translated Words', () => {
+
+    test("Highlight translation in Mangoes are my favorite fruit.", () => {
+      const textString = 'Mangoes are my favorite fruit.'
+      const localeString = 'american-to-british'
+      let translation = translator.translate(textString, localeString)
+      assert.include(translation, '<span class="highlight">')
+      assert.include(translation, 'favourite')
+      assert.include(translation, '</span>')
+    })
+
+    test("Highlight translation in I ate yogurt for breakfast.", () => {
+      const textString = 'I ate yogurt for breakfast.'
+      const localeString = 'american-to-british'
+      let translation = translator.translate(textString, localeString)
+      assert.include(translation, '<span class="highlight">')
+      assert.include(translation, 'yoghurt')
+      assert.include(translation, '</span>')
+    })
+
+    test("Highlight translation in We watched the footie match for a while.", () => {
+      const textString = 'We watched the footie match for a while.'
+      const localeString = 'british-to-american'
+      let translation = translator.translate(textString, localeString)
+      assert.include(translation, '<span class="highlight">')
+      assert.include(translation, 'soccer')
+      assert.include(translation, '</span>')
+    })
+
+    test("Highlight translation in Paracetamol takes up to an hour to work.", () => {
+      const textString = 'Paracetamol takes up to an hour to work.'
+      const localeString = 'british-to-american'
+      let translation = translator.translate(textString, localeString)
+      assert.include(translation, '<span class="highlight">')
+      assert.include(translation, 'Tylenol')
+      assert.include(translation, '</span>')
+    })
+
+  })
 
 });
